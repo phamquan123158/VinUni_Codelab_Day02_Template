@@ -63,11 +63,11 @@ Hãy sử dụng **4 Lenses** dưới đây để quét qua hoạt động vận
 ### 📝 List bài toán của tôi:
 | # | Subsidiary (VinFast/Xanh SM...) | Lens | Mô tả ngắn bài toán |
 |---|----------------------------------|------|---------------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
+| 1 |VinFast |AI-upgrade |Chẩn đoán sơ bộ mã lỗi kỹ thuật từ mô tả tiếng Việt tự nhiên của khách hàng tại xưởng dịch vụ 3S. |
+| 2 |VinFast |Lặp lại |Tự động phân tích log OCPP để phát hiện bất thường và đối soát phiên sạc V-GREEN bị gián đoạn. |
+| 3 |Xanh SM |Tốn thời gian |Tự động tổng hợp và phân loại nguyên nhân hủy chuyến từ ghi âm cuộc gọi và ghi chú tài xế. |
+| 4 |Vinhomes |Repetitive |Trích xuất thông tin và tự động định tuyến (route) phiếu phản ánh cư dân trên App Vinhomes Resident đến đúng ban quản lý tòa nhà. |
+| 5 |Vinmec |Pain từ người khác |Tự động trích xuất dữ liệu EMR để soạn thảo bản thảo Tóm tắt bệnh án xuất viện (Discharge Summary) giúp bác sĩ giảm tải hành chính. |
 
 ---
 
@@ -91,8 +91,8 @@ Chọn **top 3 bài toán** từ danh sách trên và hoàn thiện **3 Quick Pr
 │ Bước nào tốn thời gian/lỗi nhất? ___ (⏱ ___ phút/lượt)      │
 │ AI có thể nhảy vào hỗ trợ ở bước nào? _____________________ │
 │                                                             │
-│ Đo thành công bằng gì (Metric có số)? ______________________ │
-│   VD: "Giảm thời gian soạn phản hồi từ 10 min ──> under 2 min"│
+│ Đo thành công bằng gì (Metric có số)? _____________________ │
+│ VD: "Giảm thời gian soạn phản hồi từ 10 min ──> under 2 min"│
 │                                                             │
 │ Quick Architecture: [ ] No AI  [ ] Rule  [ ] LLM  [ ] Agent │
 └─────────────────────────────────────────────────────────────┘
