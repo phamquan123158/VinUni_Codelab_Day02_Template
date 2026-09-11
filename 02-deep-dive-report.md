@@ -6,11 +6,12 @@
 
 ---
 
-## 🃏 QUICK PROBLEM CARD #2
+## 🃏 Thẻ Bài Toán Lựa Chọn: QUICK PROBLEM CARD #1 (Xanh SM)
+*(Trích xuất từ kết quả đánh giá Phase 2 trong file [01-problem-scan.md](01-problem-scan.md))*
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ QUICK PROBLEM CARD #2                                                                  │
+│ QUICK PROBLEM CARD #1                                                                  │
 │                                                                                        │
 │ Bài toán (1 câu): Tài xế Xanh SM báo cáo sự cố sạc pin / cạn pin giữa đường cần điều   │
 │ phối cứu hộ hoặc trạm sạc VinFast trống gần nhất trong giờ cao điểm.                  │
@@ -39,6 +40,10 @@
 
 ## 3.1. Current-State Workflow Mapping
 
+### 🖼️ Sơ đồ trực quan hóa quy trình hiện tại (Visual Diagram)
+![Current-State Workflow Diagram](04-workflow-diagram.png)  
+*(Sơ đồ trực quan độ phân giải cao được lưu tại file [04-workflow-diagram.png](04-workflow-diagram.png))*
+
 ### Bảng phân rã các bước vận hành hiện tại (Current-State Breakdown)
 
 | Bước | Tác vụ nghiệp vụ | Người thực hiện (Actor) | Thời gian | Đầu vào (Input) | Đầu ra (Output) | Điểm nghẽn / Chuyển giao |
@@ -54,7 +59,7 @@
 
 ---
 
-### Sơ đồ quy trình hiện tại (Current-State Workflow Diagram)
+### Sơ đồ luồng quy trình (Current-State Flow Chart)
 
 ```text
        [ Khách hàng / Tài xế ]
