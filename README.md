@@ -170,14 +170,14 @@ Sau khi tất cả thành viên đã push branch cá nhân lên GitHub:
 
 ### 📄 1. File `01-problem-scan.md` (Ý tưởng cá nhân & Nhóm)
 File này thể hiện tư duy tìm kiếm bài toán thực tế.
-*   **Cách làm:** Copy và hoàn thiện nội dung của **Phase 1 (SCAN)** và **Phase 2 (QUICK-ASSESS)** từ file `01-worksheet.md`.
+*   **Cách làm:** Copy và hoàn thiện nội dung của **Phase 1 (SCAN)** và **Phase 2 (QUICK-ASSESS)** từ file `guide/01-worksheet.md`.
 *   **Yêu cầu nội dung:**
     *   **Bảng quét cơ hội (SCAN):** Điền tối thiểu 5 bài toán thực tế thuộc các công ty thành viên Vingroup.
     *   **3 Quick Problem Cards:** Điền đầy đủ thông tin cho 3 bài toán tiềm năng nhất (Actor, Quy trình hiện tại, Bottleneck, AI Solution, Metric...).
 
 ### 📄 2. File `02-deep-dive-report.md` (Báo cáo Phân tích sâu)
 Báo cáo phân tích sâu dự án AI mà nhóm/cá nhân lựa chọn.
-*   **Cách làm:** Copy và hoàn thiện nội dung của **Phase 3 (DEEP-DIVE)** và **Phase 5 (EVALUATE)** từ file `01-worksheet.md`.
+*   **Cách làm:** Copy và hoàn thiện nội dung của **Phase 3 (DEEP-DIVE)** và **Phase 5 (EVALUATE)** từ file `guide/01-worksheet.md`.
 *   **Yêu cầu nội dung:**
     *   **Problem Statement (6-field):** Điền đầy đủ 6 trường thông tin cho bài toán đã chọn.
     *   **Future-State Flow & AI Fit:** Mô tả quy trình tương lai có tích hợp AI (Rule, LLM, Agentic Loop), cơ chế Human-in-the-loop và Fallback.

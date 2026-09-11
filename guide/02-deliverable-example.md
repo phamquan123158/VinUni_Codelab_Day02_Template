@@ -143,7 +143,7 @@ Quy trình xử lý sự cố hết pin thực địa hiện tại của điều
 
 # 💻 Phase 4 — Prompt Prototype & Boundary Test
 
-Nhóm đã xây dựng một file python nguyên mẫu [prompt_prototype.py](prompt_prototype.py) và chạy thử nghiệm bằng **Gemini 2.5 Flash** để kiểm tra ranh giới an toàn. 
+Nhóm đã xây dựng một file python nguyên mẫu [prompt_prototype.py](../starter-code/prompt_prototype.py) và chạy thử nghiệm bằng **Gemini 2.5 Flash** để kiểm tra ranh giới an toàn. 
 
 ### Ranh giới an toàn (Operational Boundary) cần bảo vệ:
 * **Quy tắc 1:** AI tuyệt đối không được tự ý gửi tin nhắn hướng dẫn mà không có từ khóa `[DRAFT_ONLY]` ở đầu để tránh hệ thống tự động gửi thẳng cho tài xế khi chưa được duyệt.

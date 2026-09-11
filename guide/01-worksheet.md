@@ -139,7 +139,7 @@ Chọn **top 3 bài toán** từ danh sách trên và hoàn thiện **3 Quick Pr
 Để đảm bảo kỹ sư của Vin Smart Future luôn giữ vững năng lực lập trình, nhóm của bạn sẽ tiến hành **lập trình bản mẫu prompt** trực tiếp trên **Gemini 2.5 Flash** bằng Python để stress-test hệ thống.
 
 ### Hướng dẫn thực hiện:
-1. Mở file [starter-code/prompt_prototype.py](starter-code/prompt_prototype.py) bằng VS Code/Cursor.
+1. Mở file [starter-code/prompt_prototype.py](../starter-code/prompt_prototype.py) bằng VS Code/Cursor.
 2. Hoàn thiện các nội dung sau:
    * **System Prompt:** Viết chỉ thị cực kỳ nghiêm ngặt quy định vai trò, nhiệm vụ, định dạng output và **Operational Boundary (Ranh giới cấm)** của mô hình.
    * **Structured Output:** Định nghĩa định dạng JSON output rõ ràng.
