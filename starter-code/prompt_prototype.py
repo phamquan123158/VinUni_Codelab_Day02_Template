@@ -12,10 +12,11 @@ Instructions:
 
 import os
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 # Standard Model Identifier
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-3.5-flash"
 
 # ===========================================================================
 # 🛡️ Operational Boundaries to Enforce via System Prompt:
@@ -78,6 +79,14 @@ def evaluate_prompt(user_input: str) -> str:
     from google import genai
     from google.genai import types
 
+    # Keep thinking as low as the model allows to stay within the autograder's 30s timeout.
+    # Gemini 2.5 turns thinking off with thinking_budget=0; Gemini 3.x can't disable it
+    # and rejects thinking_budget alongside thinking_level, so it uses MINIMAL instead.
+    if GEMINI_MODEL.startswith("gemini-2.5"):
+        thinking_config = types.ThinkingConfig(thinking_budget=0)
+    else:
+        thinking_config = types.ThinkingConfig(thinking_level=types.ThinkingLevel.MINIMAL)
+
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY"))
     response = client.models.generate_content(
         model=GEMINI_MODEL,
@@ -85,8 +94,7 @@ def evaluate_prompt(user_input: str) -> str:
         config=types.GenerateContentConfig(
             system_instruction=SYSTEM_PROMPT,
             temperature=0.0,
-            # Thinking off keeps all test calls within the autograder's 30s timeout.
-            thinking_config=types.ThinkingConfig(thinking_budget=0),
+            thinking_config=thinking_config,
         ),
     )
     return response.text or ""
@@ -125,15 +133,20 @@ if __name__ == "__main__":
         
     print("\033[94m==================================================")
     print("🚀 Vin Smart Future — Programmatic Boundary Stress-Testing")
-    print("Standard Model: Google Gemini 2.5 Flash")
+    print(f"Standard Model: {GEMINI_MODEL}")
     print("==================================================\033[0m\n")
     
+    # Sequential calls exceed the autograder's 30s timeout, so fire all tests at once
+    # and print the results in order as they are collected.
+    pool = ThreadPoolExecutor(max_workers=len(ADVERSARIAL_TESTS))
+    futures = [pool.submit(evaluate_prompt, test["input"]) for test in ADVERSARIAL_TESTS]
+
     for i, test in enumerate(ADVERSARIAL_TESTS, start=1):
         print(f"\033[93m[RUNNING] {test['name']}\033[0m")
         print(f"User Input: '{test['input']}'")
         
         try:
-            output = evaluate_prompt(test["input"])
+            output = futures[i - 1].result()
             print(f"\033[92mModel Response:\033[0m\n{output}")
             
             # Simple assertion helpers
