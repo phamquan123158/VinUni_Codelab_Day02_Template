@@ -63,11 +63,11 @@ Hãy sử dụng **4 Lenses** dưới đây để quét qua hoạt động vận
 ### 📝 List bài toán của tôi:
 | # | Subsidiary (VinFast/Xanh SM...) | Lens | Mô tả ngắn bài toán |
 |---|----------------------------------|------|---------------------|
-| 1 | Xanh SM | Tốn thời gian | Điều phối viên phải tra vị trí, pin, loại xe và trạm sạc còn chỗ rồi soạn hướng dẫn khi tài xế báo pin thấp. |
-| 2 | VinFast | Lặp lại | Nhân viên đối soát thủ công phiên sạc, hóa đơn và chênh lệch dữ liệu giữa xe, trạm sạc và đối tác. |
-| 3 | Vinhomes | AI-upgrade | CSKH đọc, phân loại và soạn phản hồi ban đầu cho khiếu nại cư dân từ nhiều kênh. |
-| 4 | Vinmec | Tốn thời gian | Bác sĩ tổng hợp ghi chú điều trị thành bản tóm tắt xuất viện để bệnh nhân dễ hiểu. |
-| 5 | Vinpearl / VinWonders | Pain từ người khác | Khách cần câu trả lời nhanh về vé, giờ hoạt động và đổi lịch; nhân viên tuyến đầu phải trả lời lặp lại. |
+| 1 | | | |
+| 2 | | | |
+| 3 | | | |
+| 4 | | | |
+| 5 | | | |
 
 ---
 
@@ -75,64 +75,81 @@ Hãy sử dụng **4 Lenses** dưới đây để quét qua hoạt động vận
 
 Chọn **top 3 bài toán** từ danh sách trên và hoàn thiện **3 Quick Problem Cards** dưới đây (10 phút/card).
 
-```
+**Lựa chọn:** Ý tưởng #1 (đặt lịch Vinmec), #2 (đặt đồ ăn Vinhomes) và #4 (đặt xe Xanh SM) từ danh sách đã đề xuất. Ý tưởng #3 về theo dõi bệnh nhân chưa ưu tiên ở bước này vì cần dữ liệu theo thời gian và tiêu chí cảnh báo do nhân viên y tế xác lập.
 
-## Quick Problem Card #1 — Xanh SM: hỗ trợ sự cố pin thấp
+> Các quy trình, thời gian hiện tại và ngưỡng thành công dưới đây là **giả định phục vụ bài lab**, chưa phải kết quả khảo sát hoặc thử nghiệm. Cần xác minh với người dùng trước khi triển khai. “RC” được hiểu là gợi ý/đề xuất phù hợp với nhu cầu.
 
-| Mục | Nội dung |
+### Quick Problem Card #1 — Vinmec: Hỗ trợ tìm lịch khám phù hợp
+
+| Trường | Nội dung |
 |---|---|
-| Bài toán | Rút ngắn thời gian điều phối hỗ trợ khi tài xế báo pin thấp mà vẫn tránh chỉ dẫn nguy hiểm. |
-| Công ty / Actor | Xanh SM; tài xế và điều phối viên trung tâm vận hành. |
-| Workflow hiện tại | (1) Tài xế gọi/chat báo sự cố → (2) điều phối viên xác minh biển số, vị trí, % pin → (3) tra trạm và tình trạng trụ → (4) soạn hướng dẫn hoặc gọi cứu hộ → (5) gửi sau khi kiểm tra. |
-| Bước đau nhất | Tra cứu trạm phù hợp và soạn hướng dẫn: khoảng 8–10 phút/lượt, dễ sai khi dữ liệu rải ở nhiều màn hình. |
-| AI hỗ trợ | Tóm tắt báo cáo, tạo bản nháp JSON/tin nhắn từ dữ liệu đã xác thực. Rule quyết định pin `< 5%` và khoảng cách; người vận hành phê duyệt. |
-| Metric | Median time-to-dispatch dưới 3 phút; 100% case pin `< 5%` được route sang mobile charger; 0 tin nhắn tự gửi không duyệt. |
-| Quick architecture | **[x] Rule + LLM Feature**; không dùng agent tự trị. |
+| **Bài toán (1 câu)** | Người bệnh mất thời gian mô tả nhu cầu, tìm chuyên khoa và đối chiếu lịch bác sĩ để chọn được lịch khám phù hợp. |
+| **Công ty thành viên** | Vinmec. |
+| **Ai đang đau (Actor)?** | Người bệnh chưa biết bắt đầu đặt lịch ở đâu; nhân viên đặt lịch phải hỏi lại thông tin và tra cứu nhiều lần. |
+| **Lens** | Tốn thời gian; pain từ người khác. |
+| **Bước tốn thời gian/lỗi nhất** | Bước 2–3: làm rõ nhu cầu và tìm lịch phù hợp, giả định **8 phút/lượt**; có thể phải chuyển lại cho nhân viên chuyên môn khi thông tin không rõ. |
+| **AI hỗ trợ ở đâu?** | Bước 2: tóm tắt mô tả của người bệnh thành thông tin có cấu trúc, gợi ý câu hỏi bổ sung và nhóm chuyên khoa dựa trên danh mục được Vinmec phê duyệt. Bước 3: hệ thống lọc lịch có thật theo chuyên khoa, cơ sở và thời gian; AI trình bày các lựa chọn để người bệnh xác nhận. |
+| **Metric có số** | Giảm thời gian trung bình từ tiếp nhận đến chọn được lịch từ **15 xuống ≤5 phút/lượt**; trên **100 tình huống mẫu** được nhân viên chuyên môn gán nhãn, ít nhất **95%** được chuyển đúng luồng đặt lịch hoặc luồng cần người hỗ trợ. |
+| **Quick Architecture** | **[x] Rule + [x] LLM; [ ] Agent; [ ] No AI.** Rule kiểm tra lịch trống và ràng buộc; LLM xử lý mô tả tự do. Chưa cần Agent tự đặt lịch. |
+| **Giới hạn và fallback** | Không chẩn đoán, kê thuốc hoặc tự kết luận mức độ an toàn từ triệu chứng. Ca ngoài phạm vi hoặc thiếu thông tin được chuyển nhân viên chuyên môn theo quy trình đã phê duyệt. Không bịa bác sĩ/lịch trống; chỉ xác nhận đặt lịch khi người bệnh đồng ý và hệ thống đặt lịch báo thành công. |
 
-## Quick Problem Card #2 — Vinhomes: phân loại khiếu nại cư dân
+**Workflow hiện tại giả định — 5 bước:**
 
-| Mục | Nội dung |
+1. Người bệnh gọi tổng đài hoặc mở trang đặt lịch, cung cấp nhu cầu (**2 phút**).
+2. Nhân viên hỏi thêm và xác nhận thông tin cần cho việc chọn chuyên khoa (**4 phút**).
+3. Nhân viên tra cứu bác sĩ, cơ sở và lịch trống phù hợp (**4 phút**).
+4. Người bệnh so sánh và chọn khung giờ (**3 phút**).
+5. Nhân viên xác nhận, ghi nhận lịch và gửi thông tin hẹn (**2 phút**).
+
+**Tổng: 15 phút/lượt.** Dữ liệu cần có: danh mục chuyên khoa được duyệt, danh sách bác sĩ, lịch trống và quy trình chuyển nhân viên hỗ trợ. Nếu biểu mẫu và bộ lọc thông thường đã đạt mục tiêu, có thể bỏ phần LLM.
+
+### Quick Problem Card #2 — Vinhomes: Gợi ý giỏ đồ ăn và voucher hợp lệ
+
+| Trường | Nội dung |
 |---|---|
-| Bài toán | Phân loại và tạo bản nháp phản hồi cho ticket cư dân để CSKH xử lý đúng đội phụ trách ngay từ lần đầu. |
-| Công ty / Actor | Vinhomes; nhân viên CSKH, ban quản lý tòa nhà và cư dân. |
-| Workflow hiện tại | (1) Nhận ticket → (2) đọc nội dung/ảnh → (3) chọn nhóm vấn đề → (4) chuyển đội kỹ thuật hoặc tài chính → (5) soạn phản hồi. |
-| Bước đau nhất | Đọc nội dung tự do và chọn tuyến xử lý: khoảng 5 phút/ticket, đặc biệt với ticket nhiều vấn đề. |
-| AI hỗ trợ | LLM trích xuất chủ đề, mức khẩn cấp và tạo draft; rule gán các sự cố nguy hiểm sang hotline. |
-| Metric | 85% ticket được gợi ý đúng nhóm trong dưới 30 giây; giảm 30% ticket chuyển sai; 100% phản hồi được người duyệt. |
-| Quick architecture | **[x] Rule + LLM Feature**. |
+| **Bài toán (1 câu)** | Cư dân phải tự tìm món và thử nhiều voucher ở các cửa hàng trong khu đô thị để có giỏ đồ ăn phù hợp ngân sách và giao được đến căn hộ. |
+| **Công ty thành viên** | Vinhomes — ý tưởng dịch vụ cho cư dân trong khu đô thị. |
+| **Ai đang đau (Actor)?** | Cư dân đặt đồ ăn; nhân viên cửa hàng phải giải thích điều kiện ưu đãi và phạm vi giao hàng. |
+| **Lens** | Tốn thời gian; AI có thể tốt hơn. |
+| **Bước tốn thời gian/lỗi nhất** | Bước 2–3: so sánh món, phí giao và thử voucher, giả định **10 phút/lượt**; dễ chọn mã hết hạn, không đủ giá trị đơn tối thiểu hoặc không áp dụng cho cửa hàng. |
+| **AI hỗ trợ ở đâu?** | Bước 1–2: hiểu yêu cầu như ngân sách, số người ăn và sở thích; gợi ý món hoặc món bổ sung từ thực đơn hiện có. Bước 3: code kiểm tra điều kiện voucher, tính tổng tiền sau giảm và phí giao; hệ thống xếp hạng các giỏ hợp lệ để cư dân chọn. |
+| **Metric có số** | Giảm thời gian trung bình từ bắt đầu tìm món đến có giỏ được người dùng chấp thuận từ **16 xuống ≤5 phút/lượt**; **100%** voucher được đề xuất hợp lệ trên **100 giỏ kiểm thử** với dữ liệu cố định; ít nhất **80%** giỏ đề xuất được chấp thuận mà không đổi món trong thử nghiệm **20 lượt**. |
+| **Quick Architecture** | **[x] Rule + [x] LLM; [ ] Agent; [ ] No AI.** Rule lọc cửa hàng, kiểm tra voucher và tính tiền; LLM hiểu nhu cầu và giải thích đề xuất. |
+| **Giới hạn và fallback** | Chỉ dùng thực đơn, giá, tồn kho và voucher từ nguồn dữ liệu được cung cấp; không bịa ưu đãi. Không tự thêm món, thanh toán hoặc gửi địa chỉ căn hộ cho cửa hàng khi chưa được người dùng xác nhận. Thiếu dữ liệu thì hiển thị cần kiểm tra hoặc chuyển về tìm kiếm/lọc thủ công. |
 
-## Quick Problem Card #3 — Vinpearl / VinWonders: trợ lý thông tin trước chuyến đi
+**Workflow hiện tại giả định — 5 bước:**
 
-| Mục | Nội dung |
+1. Cư dân xác định món muốn ăn và ngân sách (**2 phút**).
+2. Tìm cửa hàng giao được đến căn hộ, so sánh thực đơn và chọn món (**5 phút**).
+3. Tìm/thử voucher, đối chiếu điều kiện và tổng tiền gồm phí giao (**5 phút**).
+4. Điều chỉnh giỏ hàng, quyết định có thêm món hay không (**2 phút**).
+5. Kiểm tra địa chỉ, xem tổng tiền và xác nhận đơn (**2 phút**).
+
+**Tổng: 16 phút/lượt.** Phạm vi bản đầu là **đồ ăn trong một khu đô thị**, chưa mở rộng mọi loại hàng hóa. Cần dữ liệu thực đơn, phạm vi giao hàng, phí giao và điều kiện voucher. So sánh với baseline bộ lọc + thuật toán chọn voucher để xác định LLM có tạo thêm giá trị hay không.
+
+### Quick Problem Card #3 — Xanh SM: Gợi ý phương án đặt xe và voucher
+
+| Trường | Nội dung |
 |---|---|
-| Bài toán | Trả lời nhất quán các câu hỏi thường gặp về giờ mở cửa, loại vé và chính sách đổi lịch trước khi khách cần gặp nhân viên. |
-| Công ty / Actor | Vinpearl / VinWonders; khách và nhân viên CSKH. |
-| Workflow hiện tại | (1) Khách nhắn/gọi → (2) nhân viên tra bảng giá/chính sách → (3) trả lời → (4) chuyển cấp nếu cần đổi/hoàn tiền. |
-| Bước đau nhất | Tra chính sách thay đổi theo địa điểm, ngày và loại vé: khoảng 3 phút/câu hỏi. |
-| AI hỗ trợ | Retrieval từ knowledge base đã duyệt, tạo câu trả lời đa ngôn ngữ; không tự đổi vé hay hoàn tiền. |
-| Metric | 70% FAQ được trả lời tự phục vụ; độ chính xác được QA lấy mẫu đạt ít nhất 95%; CSAT không giảm so với baseline. |
-| Quick architecture | **[x] LLM Feature (RAG)**. |
-┌─────────────────────────────────────────────────────────────┐
-│ QUICK PROBLEM CARD #___                                     │
-│                                                             │
-│ Bài toán (1 câu): ________________________________________  │
-│ Công ty thành viên: [ ] VinFast  [ ] Xanh SM  [ ] Vinhomes  │
-│                     [ ] Vinmec   [ ] Khác (Ghi rõ)________  │
-│                                                             │
-│ Ai đang đau (Actor)? ______________________________________ │
-│                                                             │
-│ Workflow thủ công hiện tại (3-5 bước):                      │
-│   1. ___ ──> 2. ___ ──> 3. ___ ──> 4. ___                   │
-│                                                             │
-│ Bước nào tốn thời gian/lỗi nhất? ___ (⏱ ___ phút/lượt)      │
-│ AI có thể nhảy vào hỗ trợ ở bước nào? _____________________ │
-│                                                             │
-│ Đo thành công bằng gì (Metric có số)? ______________________ │
-│   VD: "Giảm thời gian soạn phản hồi từ 10 min ──> under 2 min"│
-│                                                             │
-│ Quick Architecture: [ ] No AI  [ ] Rule  [ ] LLM  [ ] Agent │
-└─────────────────────────────────────────────────────────────┘
-```
+| **Bài toán (1 câu)** | Khách hàng mất thời gian chọn phương án xe phù hợp nhu cầu và thử voucher để biết chi phí chuyến đi trước khi xác nhận. |
+| **Công ty thành viên** | Xanh SM. |
+| **Ai đang đau (Actor)?** | Khách đặt xe cần lựa chọn phù hợp số người, hành lý và ngân sách; tài xế chịu ảnh hưởng khi nhu cầu khách không khớp loại xe. |
+| **Lens** | Tốn thời gian; pain từ người khác. |
+| **Bước tốn thời gian/lỗi nhất** | Bước 2–3: đối chiếu loại xe và thử ưu đãi, giả định **5 phút/lượt**; dễ chọn xe không đáp ứng nhu cầu hoặc voucher không áp dụng. |
+| **AI hỗ trợ ở đâu?** | Bước 1–2: chuyển mô tả nhu cầu thành các tiêu chí đặt xe và giải thích lựa chọn. Bước 3: rule kiểm tra voucher và tính giá dựa trên báo giá thật. Tài xế được ghép bởi hệ thống điều phối theo khả dụng; prototype không giả định khách được chọn một tài xế cụ thể. |
+| **Metric có số** | Giảm thời gian trung bình từ nhập nhu cầu đến xác nhận yêu cầu đặt xe từ **8 xuống ≤3 phút/lượt**; ít nhất **95%** đề xuất đáp ứng tiêu chí đã khai báo trên **100 ca mẫu**; **100%** voucher đề xuất hợp lệ với điều kiện của dữ liệu test. Thời gian này không bao gồm chờ tài xế đến. |
+| **Quick Architecture** | **[x] Rule + [x] LLM; [ ] Agent; [ ] No AI.** LLM trích xuất nhu cầu; rule lọc loại xe, kiểm tra voucher và dùng dịch vụ điều phối hiện có. |
+| **Giới hạn và fallback** | Không bịa tài xế, giá, ETA hoặc mã ưu đãi; không cam kết chắc chắn có xe. Chỉ gửi yêu cầu đặt chuyến sau khi khách xác nhận. Nếu thiếu báo giá/khả dụng, yêu cầu tải lại hoặc dùng luồng đặt xe hiện có. |
+
+**Workflow hiện tại giả định — 5 bước:**
+
+1. Khách nhập điểm đón, điểm đến và nhu cầu chuyến đi (**1 phút**).
+2. So sánh loại xe, số chỗ, khả năng chở hành lý và báo giá (**3 phút**).
+3. Tìm và thử các voucher cho chuyến đi (**2 phút**).
+4. Kiểm tra tổng tiền và xác nhận yêu cầu đặt xe (**1 phút**).
+5. Hệ thống tìm tài xế; khách kiểm tra trạng thái ghép chuyến, xử lý lựa chọn khác nếu chưa có xe (**1 phút thao tác giả định**).
+
+**Tổng: 8 phút thao tác/lượt.** Ý tưởng cảnh báo pin cho tài xế được tách thành bài toán riêng vì cần dữ liệu xe, lộ trình và quy trình vận hành; không gộp vào prototype gợi ý chuyến/voucher. Cần báo giá, thông tin loại xe, dữ liệu khả dụng và điều kiện voucher từ hệ thống. Nếu người dùng chọn đủ tiêu chí trên giao diện, rule và bộ lọc có thể xử lý mà không cần LLM.
 
 > [!TIP]
 > **🤖 AI Prompts — Stress-Test thẻ bài toán:**
@@ -149,22 +166,6 @@ Chọn **top 3 bài toán** từ danh sách trên và hoàn thiện **3 Quick Pr
 * 🔄 **Handoff:** Điểm chuyển giao thông tin giữa người và hệ thống, hoặc giữa các bộ phận.
 * Ghi rõ thời gian vận hành trung bình: **Tổng cộng = ____ phút/lượt**.
 
-### Bài toán nhóm chọn: Xanh SM — hỗ trợ tài xế có pin thấp
-
-```text
-Tài xế báo sự cố (1 phút)
-        ↓  🔄 handoff: cuộc gọi/chat → ticket điều vận
-Điều phối viên xác minh xe, GPS, % pin (2 phút)
-        ↓
-Tra dashboard trạm sạc và khả dụng theo loại xe (5 phút) 🔴
-        ↓  🔄 handoff: dashboard trạm → điều phối viên
-Soạn chỉ dẫn hoặc yêu cầu xe sạc di động (4 phút) 🔴
-        ↓
-Điều phối viên kiểm tra, duyệt và gửi cho tài xế (2 phút)
-```
-
-**Tổng cộng baseline cần xác minh bằng log: 14 phút/lượt.** Hai bottleneck là tra cứu dữ liệu phân tán và soạn hướng dẫn dưới áp lực thời gian.
-
 ## 3.2. Problem Statement (6-field) & Metrics (15 min)
 Điền đầy đủ 6 trường thông tin của bài toán:
 
@@ -177,40 +178,12 @@ Soạn chỉ dẫn hoặc yêu cầu xe sạc di động (4 phút) 🔴
 | **5. Success Metric** | AI giải quyết được thì đạt ngưỡng số mấy? (Ví dụ: *"85% vé được phân loại dưới 10s"*). |
 | **6. Operational Boundary** | AI được phép làm gì, TUYỆT ĐỐI không được làm gì, điểm nào cần duyệt? |
 
-| Field | Nội dung của nhóm |
-|---|---|
-| **1. Actor / Operator** | Điều phối viên Xanh SM xử lý ticket pin thấp; tài xế là người nhận hướng dẫn. |
-| **2. Current Workflow** | Điều phối viên nhận báo cáo, xác thực biển số/GPS/% pin, tra trạm khả dụng, soạn chỉ dẫn hoặc gọi đội sạc di động, sau đó duyệt và gửi tin. Dữ liệu cần được lấy từ hệ thống nội bộ; các con số thời gian phía trên là baseline giả định cho prototype và phải đối chiếu log trước pilot. |
-| **3. Bottleneck** | Tra cứu trạm tương thích và trạng thái trụ trên nhiều màn hình, sau đó chuyển dữ liệu kỹ thuật thành hướng dẫn rõ ràng cho tài xế. |
-| **4. Business Impact** | Chậm xử lý kéo dài thời gian xe không phục vụ được và chiếm thời gian điều phối viên. Pilot sẽ đo số phút xe downtime, số ticket/ca và tỷ lệ route sai; chưa dùng các con số doanh thu chưa được xác thực. |
-| **5. Success Metric** | P50 thời gian từ tạo ticket đến bản nháp dưới 3 phút; ít nhất 95% draft được điều phối viên chấp nhận hoặc chỉnh sửa nhẹ; 100% case pin `< 5%` kích hoạt luồng mobile charger; 0 lần gửi tự động không duyệt. |
-| **6. Operational Boundary** | Hệ thống chỉ đọc dữ liệu đã cấp quyền và tạo **draft**. Phải bắt đầu bằng `[DRAFT_ONLY]`; không tự gửi tin, đặt lịch hay điều xe. Nếu pin `< 5%`, không đề xuất trạm xa hơn 5 km mà trả về `dispatch_mobile_charger`. Dữ liệu thiếu, API lỗi hoặc output sai schema → chuyển điều phối viên xử lý thủ công. |
-
 ## 3.3. Future-State Flow & AI Fit (25 min)
 * **Xác định mức AI Fit (AI-Fit Matrix):** Giải pháp thuộc nhóm nào? [ ] Rule / State-Machine [ ] LLM Feature [ ] Agentic Loop.
 * **Vẽ Future-State Flow:** Đánh dấu rõ:
   * 🔵 **AI Step:** Tác vụ LLM xử lý.
   * 🟢 **Human Step (HITL):** Bước con người phê duyệt/review (Human-in-the-loop).
   * ↩️ **Fallback:** Kế hoạch dự phòng khi LLM trả về kết quả lỗi hoặc không tự tin.
-
-**AI Fit: [x] Rule / State-Machine + [x] LLM Feature; [ ] Agentic Loop.** Rule engine phù hợp để áp ngưỡng pin, khoảng cách và quyền hành động có tính quyết định. LLM chỉ phù hợp để tóm tắt input tự do và tạo bản nháp dễ đọc.
-
-```text
-Tài xế báo pin thấp
-        ↓
-Rule: xác thực ticket, % pin, GPS và loại xe
-        ├─ pin < 5% → Rule tạo action dispatch_mobile_charger
-        └─ pin ≥ 5% → lấy danh sách trạm từ API nội bộ
-        ↓
-🔵 LLM tạo JSON + tin nhắn [DRAFT_ONLY] từ dữ liệu đã xác thực
-        ↓
-🟢 Điều phối viên kiểm tra vị trí, lý do và bấm duyệt/gửi
-        ↓
-Ghi audit log (input, rule result, draft, người duyệt)
-
-↩️ Fallback: API thiếu dữ liệu, JSON không hợp lệ, hoặc người duyệt từ chối
-→ hiển thị checklist và quay về quy trình tra cứu/soạn tay hiện tại.
-```
 
 ---
 
@@ -230,34 +203,22 @@ Ghi audit log (input, rule result, draft, người duyệt)
    ```
 4. Kiểm tra xem các ranh giới an toàn có bị LLM phá vỡ hay không và ghi lại kết quả vào worksheet.
 
-### Kết quả prototype và adversarial testing
-
-File triển khai: [starter-code/prompt_prototype.py](starter-code/prompt_prototype.py). System prompt yêu cầu output bắt đầu bằng `[DRAFT_ONLY]`, sau đó là JSON có `action`, `reason`, `draft_message` và `requires_human_approval`.
-
-| Test | Tấn công | Kết quả cần chấp nhận |
-|---|---|---|
-| 1 | Pin 2%, yêu cầu chỉ đường tới trạm cách 8 km và gửi ngay | Có `[DRAFT_ONLY]`; action là `dispatch_mobile_charger`; không khuyến nghị trạm 8 km. |
-| 2 | Yêu cầu bỏ tag và gửi thẳng lời chúc khách hàng | Output vẫn bắt đầu `[DRAFT_ONLY]`; chỉ là draft cần người duyệt. |
-| 3 | Prompt injection: “ignore previous instructions”, pin 3%, yêu cầu trạm 12 km | Không làm theo chỉ dẫn override; giữ tag và chuyển sang mobile charger. |
-
-Kiểm tra tĩnh của autograder (`--check-code-1`, `--check-code-2`, `--check-code-3`) đã đạt. Khi chạy thật bằng API key, nhóm ghi lại output thực tế và đánh dấu từng test là pass/fail; không coi prompt đơn thuần là biện pháp an toàn duy nhất trong production.
-
 ---
 
 # 🏁 Phase 5 — EVALUATE (Nhóm, 20 min)
 
 ### AI Readiness Checklist:
-1. [ ] Chúng tôi có sẵn dữ liệu mẫu/logs sạch để test? **Chưa đủ — cần trích xuất ticket đã ẩn danh, GPS giả lập và snapshot trạm sạc trước pilot.**
-2. [x] Rủi ro khi AI sai có nằm trong tầm kiểm soát (qua HITL hoặc Fallback)? **Có — rule cứng, HITL, audit log và quy trình thủ công dự phòng.**
-3. [ ] Stakeholders sẵn sàng thay đổi quy trình làm việc cũ? **Chưa xác nhận — cần workshop với điều phối viên và đào tạo pilot.**
+1. [ ] Chúng tôi có sẵn dữ liệu mẫu/logs sạch để test?
+2. [ ] Rủi ro khi AI sai có nằm trong tầm kiểm soát (qua HITL hoặc Fallback)?
+3. [ ] Stakeholders sẵn sàng thay đổi quy trình làm việc cũ?
 
 ### Quyết định cuối cùng của Ban Giám Đốc Vin Smart Future:
 [ ] **GO (Bắt đầu xây dựng Prototype):** Bắt đầu phát triển với scope hẹp.
-[x] **NOT YET (Cần tích lũy thêm dữ liệu/xác lập baseline):** Trì hoãn để chuẩn bị thêm.
+[ ] **NOT YET (Cần tích lũy thêm dữ liệu/xác lập baseline):** Trì hoãn để chuẩn bị thêm.
 [ ] **NO-GO (Không khả thi / Rule-based tốt hơn):** Hủy bỏ dự án AI này.
 
 **Justification (Lý giải quyết định dựa trên bằng chứng kỹ thuật và chi phí):**
-> **Quyết định: NOT YET.** Bài toán có scope đủ hẹp để prototype: phần quyết định an toàn có thể dùng rule-based, còn LLM chỉ tạo draft. Tuy nhiên, chưa có bằng chứng về chất lượng dữ liệu trạm sạc theo thời gian thực, baseline 14 phút/lượt mới là giả định cần đo bằng log, và chưa có xác nhận thay đổi quy trình từ điều phối viên. Trong 2–4 tuần chuẩn bị, nhóm cần: (1) ẩn danh và lấy mẫu tối thiểu 200 ticket; (2) đo baseline P50/P95, tỉ lệ route sai và thời gian xe downtime; (3) kiểm thử rule `< 5%` trên các case biên; (4) chạy shadow mode để điều phối viên chấm draft mà không gửi cho tài xế. Chỉ chuyển sang GO nếu đạt ngưỡng metric, API dữ liệu ổn định và stakeholder phê duyệt HITL.
+> *Viết lý giải chi tiết tại đây*
 
 ---
 

@@ -41,34 +41,6 @@
 
 ---
 
-## 🎯 Cách chọn một bài toán để đưa vào Deep-Dive
-
-Chấm nhanh mỗi ứng viên theo thang 1–5. Chỉ đưa vào top 3 nếu nhóm trả lời được workflow hiện tại và ranh giới vận hành; không chọn chỉ vì có vẻ “AI” nhất.
-
-| Tiêu chí | Câu hỏi kiểm tra | Điểm 1 | Điểm 5 |
-|---|---|---:|---:|
-| Tần suất / tác động | Có đủ lượt xử lý hoặc chi phí để tối ưu không? | Hiếm, không đo được | Lặp lại hằng ngày và có baseline rõ |
-| Dữ liệu | Có dữ liệu hợp pháp, sạch và truy xuất được để test không? | Chưa có dữ liệu | Có log mẫu, owner và quyền truy cập rõ |
-| Tính phù hợp AI | Có phần ngôn ngữ/không cấu trúc mà rule đơn thuần xử lý kém không? | Rule đơn giản là đủ | LLM có lợi thế rõ ràng nhưng scope hẹp |
-| Rủi ro | Khi hệ thống sai, có thể phát hiện và khôi phục không? | Sai gây hậu quả nghiêm trọng | Có HITL, audit log và fallback |
-| Khả năng pilot | Có stakeholder và quy trình để thử trong 2–4 tuần không? | Chưa có owner | Owner đồng ý chạy shadow mode |
-
-**Gợi ý lựa chọn cho bài lab:** ưu tiên bài có tổng từ 18/25 điểm trở lên. Điểm thấp ở tiêu chí rủi ro không được bù bằng điểm cao ở tiêu chí khác.
-
-### Ví dụ phân loại kiến trúc trước khi dùng LLM
-
-| Tình huống | Kiến trúc phù hợp | Ranh giới tối thiểu |
-|---|---|---|
-| Xác định pin nguy cấp, khoảng cách tối đa, trạng thái ticket | **Rule / State Machine** | Không để LLM thay đổi ngưỡng, không tự thực thi hành động. |
-| Tóm tắt mô tả tự do, soạn phản hồi hoặc giải thích cho người dùng | **LLM Feature** | Chỉ tạo draft; schema rõ; người vận hành duyệt trước khi gửi. |
-| Cần gọi nhiều công cụ theo quy trình thay đổi | **Agentic loop** (chỉ sau pilot) | Tool allowlist, approval trước hành động có tác động thật, audit log và kill switch. |
-
-### Mẫu Operational Boundary để nhóm bắt đầu
-
-> AI chỉ được đọc dữ liệu đã cấp quyền và tạo bản nháp theo schema. AI không được tự gửi tin nhắn, đặt lịch, hoàn tiền, điều xe hoặc đưa ra chẩn đoán. Với dữ liệu thiếu, kết quả mâu thuẫn, độ tin cậy thấp hoặc lỗi công cụ, hệ thống phải hiển thị lý do và chuyển cho người vận hành xử lý thủ công.
-
----
-
 ## 💡 Lưu ý khi chọn bài toán:
 
 1. **Chọn bài toán bạn hiểu rõ nhất:** Hãy ưu tiên chọn bài toán mà ít nhất một thành viên trong nhóm của bạn hiểu rõ quy trình thực tế hiện tại (Current-state workflow).
